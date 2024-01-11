@@ -1,0 +1,7 @@
+services:
+  ticket:
+    build: .
+    container_name: TicketApp
+    restart: always
+    ports:
+      - 3000:3000
