@@ -36,10 +36,10 @@ const TicketCard = ({ ticket }: Props) => {
 
   return (
     <Link href={`/tickets/${ticket._id}`} style={{ display: "contents" }}>
-      <Card className="hover:bg-primary mb-4">
+      <Card className="mb-4 hover:bg-primary">
         <CardHeader>
           <CardTitle>
-            <div className="flex mb-3">
+            <div className="mb-3 flex">
               <div className={`${getStatusColor(ticket.priority)}`}>
                 {ticket.priority}
               </div>
@@ -55,8 +55,8 @@ const TicketCard = ({ ticket }: Props) => {
           </h4>
           <p className="whitespace-pre-wrap">{ticket.description}</p>
           <div className="flex-grow"></div>
-          <div className="flex mt-2">
-            <div className="text-xs my-1">
+          <div className="mt-2 flex">
+            <div className="my-1 text-xs">
               {formatTimestamp(ticket.createdAt)}
             </div>
             <div className="ml-auto flex items-end">

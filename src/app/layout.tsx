@@ -24,8 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <div className="flex flex-col h-screen max-h-screen">
-          <div className="flex-grow overflow-y-auto bg-dark-200 text-white">
+        <div className="flex h-screen max-h-screen flex-col">
+          <div className="bg-dark-200 flex-grow overflow-y-auto text-white">
             <AuthProvider>
               <ThemeProvider attribute="class" defaultTheme="dark">
                 <Toaster position="top-center" expand={true} richColors />

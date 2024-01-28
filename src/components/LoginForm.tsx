@@ -26,7 +26,7 @@ import * as z from "zod";
 import Link from "next/link";
 
 const Error = ({ error }: { error: string }) => {
-  if (error) return <div className="text-red-600 text-center">{error}</div>;
+  if (error) return <div className="text-center text-red-600">{error}</div>;
   else return null;
 };
 
@@ -66,7 +66,7 @@ const LoginForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex justify-center items-center h-3/4"
+        className="flex h-3/4 items-center justify-center"
       >
         <Card className="w-[350px]">
           <CardHeader>
@@ -75,12 +75,12 @@ const LoginForm = () => {
             </CardTitle>
             <Error error={error} />
           </CardHeader>
-          <CardContent className="grid gap-4">
+          <CardContent className="flex flex-col items-center gap-4">
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input placeholder="Username" {...field} />
@@ -94,7 +94,7 @@ const LoginForm = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
@@ -106,7 +106,7 @@ const LoginForm = () => {
 
             <Link
               href="/register"
-              className="font-medium text-primary underline underline-offset-4 text-center"
+              className="text-center font-medium text-primary underline underline-offset-4"
             >
               Register
             </Link>

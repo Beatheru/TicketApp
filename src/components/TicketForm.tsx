@@ -115,11 +115,11 @@ const TicketForm = ({ ticket }: Props) => {
   }, [isEditing]);
 
   return (
-    <div className="flex justify-center mt-5">
+    <div className="mt-5 flex justify-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 flex flex-col gap-3 w-1/2"
+          className="flex w-1/2 flex-col gap-3 space-y-8"
         >
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
             {isEditing ? "Update Ticket" : "Create Ticket"}
@@ -180,7 +180,7 @@ const TicketForm = ({ ticket }: Props) => {
                         onValueChange={(search) => handleSearchUsers(search)}
                       />
                       {loading && (
-                        <div className="text-center p-1">Loading...</div>
+                        <div className="p-1 text-center">Loading...</div>
                       )}
                       <CommandEmpty>No users found.</CommandEmpty>
                       <CommandGroup>

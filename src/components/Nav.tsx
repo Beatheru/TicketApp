@@ -13,7 +13,7 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="flex justify-between bg-background p-4 items-center">
+      <nav className="flex items-center justify-between bg-background p-4">
         <div className="flex items-center space-x-4">
           <Link href="/">
             <FontAwesomeIcon icon={faHome} className="icon" />

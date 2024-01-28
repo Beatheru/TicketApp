@@ -21,7 +21,7 @@ const Dashboard = async () => {
     <div className="p-5">
       <div>
         {tickets && (
-          <div className="lg:grid grid-cols-2 xl:grid-cols-4 gap-4">
+          <div className="grid-cols-2 gap-4 lg:grid xl:grid-cols-4">
             {tickets.map((ticket, index) => (
               <TicketCard key={index} ticket={ticket} />
             ))}
