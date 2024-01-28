@@ -1,22 +1,14 @@
 import Nav from "@/components/Nav";
 import TicketForm from "@/components/TicketForm";
 import { Ticket } from "@/models/Ticket";
-import axios from "axios";
 
-interface ApiResponse {
-  ticket: Ticket;
-}
-
-const getTicketById = async (id: string) => {
-  const { data } = await axios.get<ApiResponse>(
-    `${process.env.NEXTAUTH_URL}/api/tickets/${id}`
-  );
-
-  return data;
+const getTicket = async (id: string) => {
+  const ticket = await Ticket.findById<Ticket>(id);
+  return JSON.parse(JSON.stringify(ticket)) as Ticket;
 };
 
 const TicketPage = async ({ params }: { params: { id: string } }) => {
-  const { ticket } = await getTicketById(params.id);
+  const ticket = await getTicket(params.id);
 
   return (
     <>

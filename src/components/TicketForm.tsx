@@ -3,7 +3,6 @@
 import { Ticket } from "@/models/Ticket";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -44,6 +43,18 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { createTicket, editTicket, searchUsers } from "@/lib/actions";
+import { toast } from "sonner";
+
+export const formSchema = z
+  .object({
+    title: z.string().min(1, { message: "Title is required" }),
+    assignTo: z.string().min(1, { message: "User is required" }),
+    description: z.string().min(1, { message: "Description is required" }),
+    priority: z.string().min(1, { message: "Priority is required" }),
+    status: z.string().min(1, { message: "Status is required" })
+  })
+  .required();
 
 interface Props {
   ticket?: Ticket;
@@ -60,16 +71,6 @@ const TicketForm = ({ ticket }: Props) => {
   const priorities = ["Low", "Medium", "High"];
   const statuses = ["Not Started", "Started", "Done"];
 
-  const formSchema = z
-    .object({
-      title: z.string().min(1, { message: "Title is required" }),
-      assignTo: z.string().min(1, { message: "User is required" }),
-      description: z.string().min(1, { message: "Description is required" }),
-      priority: z.string().min(1, { message: "Priority is required" }),
-      status: z.string().min(1, { message: "Status is required" })
-    })
-    .required();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,40 +82,26 @@ const TicketForm = ({ ticket }: Props) => {
     }
   });
 
-  const searchUsers = (search: string) => {
+  const handleSearchUsers = (search: string) => {
     setLoading(true);
-
-    axios
-      .get(`${window.location.origin}/api/search/users?username=${search}`)
-      .then((res) => {
-        setLoading(false);
-        setUserList(res.data.users);
-      })
-      .catch(() => {
-        setLoading(false);
-        setUserList([]);
-      });
+    searchUsers(search).then((res) => {
+      setLoading(false);
+      setUserList(res);
+    });
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    let err = null;
     if (isEditing) {
-      await axios.put(
-        `${window.location.origin}/api/tickets/${ticket!._id}`,
-        JSON.stringify({
-          form: {
-            ...values
-          }
-        })
-      );
+      err = await editTicket(ticket!._id, values);
     } else {
-      await axios.post(
-        `${window.location.origin}/api/tickets`,
-        JSON.stringify({
-          form: {
-            ...values
-          }
-        })
-      );
+      err = await createTicket(values);
+    }
+
+    if (err) {
+      console.log(err);
+      toast.error("Failed to save, please try again");
+      return;
     }
 
     router.push("/");
@@ -123,7 +110,7 @@ const TicketForm = ({ ticket }: Props) => {
 
   useEffect(() => {
     if (isEditing) {
-      searchUsers("");
+      handleSearchUsers("");
     }
   }, [isEditing]);
 
@@ -161,7 +148,7 @@ const TicketForm = ({ ticket }: Props) => {
                   open={open}
                   onOpenChange={(open) => {
                     setOpen(open);
-                    searchUsers("");
+                    handleSearchUsers("");
                   }}
                 >
                   <PopoverTrigger asChild>
@@ -190,7 +177,7 @@ const TicketForm = ({ ticket }: Props) => {
                       <CommandInput
                         placeholder="Search framework..."
                         className="h-9"
-                        onValueChange={(search) => searchUsers(search)}
+                        onValueChange={(search) => handleSearchUsers(search)}
                       />
                       {loading && (
                         <div className="text-center p-1">Loading...</div>

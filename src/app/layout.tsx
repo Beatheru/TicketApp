@@ -5,7 +5,7 @@ import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { ThemeProvider } from "./theme-provider";
-import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "./SessionProvider";
 config.autoAddCss = false;
 
@@ -28,6 +28,7 @@ export default function RootLayout({
           <div className="flex-grow overflow-y-auto bg-dark-200 text-white">
             <AuthProvider>
               <ThemeProvider attribute="class" defaultTheme="dark">
+                <Toaster position="top-center" expand={true} richColors />
                 {children}
               </ThemeProvider>
             </AuthProvider>

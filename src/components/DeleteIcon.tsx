@@ -1,36 +1,39 @@
 "use client";
 
+import { deleteTicket } from "@/lib/actions";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   id: string;
 }
 
-const DeleteBlock = ({ id }: Props) => {
+const DeleteIcon = ({ id }: Props) => {
   const router = useRouter();
 
-  const deleteTicket = async (e: React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
-    const { status } = await axios.delete(
-      `${window.location.origin}/api/tickets/${id}`
-    );
-    if (status === 200) {
+    const err = await deleteTicket(id);
+    if (!err) {
       router.refresh();
+      return;
     }
+
+    console.log(err);
+    toast.error("Failed to delete, please try again");
   };
 
   return (
     <FontAwesomeIcon
       icon={faX}
       className=" text-red-400 hover:cursor-pointer hover:text-red-200"
-      onClick={deleteTicket}
+      onClick={handleDelete}
     />
   );
 };
 
-export default DeleteBlock;
+export default DeleteIcon;
